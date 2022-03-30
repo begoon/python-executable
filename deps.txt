@@ -1,8 +1,0 @@
-certifi
-charset-normalizer
-idna
-requests
-tomli
-urllib3
-docker
-websocket

@@ -1,26 +1,21 @@
 import os
-import shutil
-import site
 from pathlib import Path
-from shutil import copytree, ignore_patterns, rmtree
+from shutil import copytree, ignore_patterns, make_archive, rmtree
+from distutils.dir_util import copy_tree
 
-DIST = os.getcwd() + '/dist'
+EXE = 'exe'
+cwd = Path(os.getcwd())
 
-dist = Path(DIST)
-if dist.exists() and dist.is_dir():
-    shutil.rmtree(dist)
+dist = cwd / 'dist'
+dist.exists() and dist.is_dir() and rmtree(dist)
 
-PACKAGES = "packages"
-packages = dist / PACKAGES
+dist_clean = cwd / 'dist_clean'
+dist_clean.exists() and dist_clean.is_dir() and rmtree(dist_clean)
 
-runner = "import app.main"
+app = cwd / 'app'
+packages = cwd / 'packages'
 
-requirements = map(
-    lambda x: x.split('==')[0].replace('-', '_').strip(),
-    open('deps.txt').readlines(),
-)
-requirements = set(requirements)
-print('- requirements ', requirements)
+runner = "import main"
 
 ignores = ignore_patterns(
     '*.pyc',
@@ -28,26 +23,26 @@ ignores = ignore_patterns(
     '__pycache__',
     '*egg-info',
     '*dist-info',
+    'bin',
 )
 
-for folder_ in site.getsitepackages():
-    folder = Path(folder_)
-    print(f'- adding dependencies from {folder}')
+print(f"- copying {app} to {dist}")
+copytree(app, dist)
 
-    deps = list(filter(lambda x: x in requirements, os.listdir(folder)))
+print(f"- copying {packages} to {dist}")
+copy_tree(str(packages), str(dist))
 
-    for dep in deps:
-        copytree(folder / dep, packages / dep, ignore=ignores)
+print(f"- creating ./__main__.py in {dist}")
+open(dist / '__main__.py', 'w').write(runner)
 
-print(f"- copying {os.getcwd()}/app/* to {packages / 'app'}")
-copytree(os.getcwd() + '/app', packages / 'app', ignore=ignores)
+print(f"- copying {dist} to {dist_clean}")
+copytree(dist, dist_clean, ignore=ignores)
 
-print(f"- creating ./__main__.py in {packages}")
-with open(packages / '__main__.py', 'w') as f:
-    f.write(runner)
+print(f'- zipping {dist_clean} to {EXE}.zip')
+make_archive(EXE, 'zip', dist_clean)
 
-print(f'- zipping {dist/packages} to {dist/"packages.zip"}')
-shutil.make_archive(dist / 'exe', 'zip', dist / packages)
+print(f'- removing {dist_clean}')
+rmtree(dist_clean)
 
-print(f'- removing {dist/packages}')
-rmtree(dist / 'packages')
+print(f'- removing {dist}')
+rmtree(dist)

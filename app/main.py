@@ -1,7 +1,10 @@
 import json
 from typing import Dict
+import requests
 
 import docker
+
+print(requests.get("https://google.com"))
 
 client = docker.from_env()
 
