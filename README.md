@@ -36,11 +36,11 @@ because it is the entry point of the executable.
 This command produces two files eventually.
 
 The first file is `exe.zip`, which is the standard zip archive.
-This file can be run by `python exe.zip` command.
+This file can be executed by `python exe.zip` command.
 
 The second file is `exe.pyz`. This file is executable and contains
 the "shebang" prefix to `/bin/usr/python3`. Literally, this file is the
 contatenation of the "shebang" `#!/bin/usr/python3` line and the `exe.zip`.
 
-This file can be execute just by as `exe.pyz`. Obviously, the python 3
+This file can be executed just by as `exe.pyz`. Obviously, the python 3
 interpreter must be avaiable on the target system at `/usr/bin/python3`.
