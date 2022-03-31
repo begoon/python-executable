@@ -30,8 +30,8 @@ dependencies in the `packages/` folder are correct.
 
 This command combines `app/` and `packages/` and creates a zip file.
 It also adds `__main__.py` to the root of the archive. This fill imports
-`main.py` from the `app/` folder, that is why the `main.py` must exists
-because this is the entry point of the executable.
+`main.py` from the `app/` folder, that is why the `main.py` must exist
+because it is the entry point of the executable.
 
 This command produces two files eventually.
 
