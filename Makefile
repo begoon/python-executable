@@ -13,6 +13,7 @@ pyz:
 	chmod +x exe.pyz
 
 pack: zip pyz
+	@du -h exe.*
 	
 run:
 	PYTHONPATH=packages python app/main.py
