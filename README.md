@@ -29,7 +29,7 @@ dependencies in the `packages/` folder are correct.
     make
 
 This command combines `app/` and `packages/` and creates a zip file.
-It also add `__main__.py` to the root of the archive. This fill imports
+It also adds `__main__.py` to the root of the archive. This fill imports
 `main.py` from the `app/` folder, that is why the `main.py` must exists
 because this is the entry point of the executable.
 
