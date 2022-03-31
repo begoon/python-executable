@@ -1,7 +1,7 @@
 # Python Executable
 
 This is a trivial excercise to pack a python script with its dependencies
-into a zip file.
+into an executable zip file.
 
 ## Project structure
 
