@@ -21,7 +21,7 @@ the `packages/` folder.
 
     make run
 
-This command executes `app/main.py` as a simple smoke test that the
+This command executes `app/main.py` as a simple smoke test to check that the
 dependencies in the `packages/` folder are correct.
 
 ### Pack
