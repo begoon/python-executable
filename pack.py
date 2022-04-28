@@ -1,7 +1,9 @@
 import os
-from pathlib import Path
-from shutil import copytree, ignore_patterns, make_archive, rmtree
+import shutil
+import zipfile
 from distutils.dir_util import copy_tree
+from pathlib import Path
+from shutil import copytree, ignore_patterns, rmtree
 
 EXE = 'exe'
 cwd = Path(os.getcwd())
@@ -38,8 +40,21 @@ open(dist / '__main__.py', 'w').write(runner)
 print(f"- copying {dist} to {dist_clean}")
 copytree(dist, dist_clean, ignore=ignores)
 
+zipfile_original = zipfile.ZipFile
+
+
+def zipfile_hook(*args, **kwargs):
+    print(f"  - {args}")
+    print(f"  - {kwargs}")
+    kwargs['compression'] = zipfile.ZIP_DEFLATED
+    kwargs['compresslevel'] = 9
+    return zipfile_original(*args, **kwargs)
+
+
+zipfile.ZipFile = zipfile_hook
+
 print(f'- zipping {dist_clean} to {EXE}.zip')
-make_archive(EXE, 'zip', dist_clean)
+shutil.make_archive(EXE, 'zip', dist_clean)
 
 print(f'- removing {dist_clean}')
 rmtree(dist_clean)
